@@ -37,12 +37,6 @@ func (ur *UserRepository) Create(ctx context.Context, user models.User) (models.
 	return user, nil
 }
 
-func (ur *UserRepository) Save(u models.User) {
-	ur.mu.Lock()
-	defer ur.mu.Unlock()
-	ur.data[u.Email] = u
-}
-
 func (ur *UserRepository) Find(username string, password string) (models.User, bool) {
 	ur.mu.Lock()
 	defer ur.mu.Unlock()
@@ -58,12 +52,4 @@ func (ur *UserRepository) Find(username string, password string) (models.User, b
 	}
 
 	return u, true
-}
-
-func (ur *UserRepository) ExistsByEmail(ctx context.Context, email string) (models.User, bool) {
-	ur.mu.Lock()
-	defer ur.mu.Unlock()
-	user, exists := ur.data[email]
-
-	return user, exists
 }
